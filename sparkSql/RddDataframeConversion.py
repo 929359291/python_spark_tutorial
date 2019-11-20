@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
+import functools
 import sys
 import os
+import time
 
 base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(base_path)
@@ -9,10 +11,37 @@ sys.path.append(base_path)
 from pyspark.sql import SparkSession
 from python_spark_tutorial.commons.Utils import Utils
 
+
 # for root, dirs, files in os.walk(base_path):
 #     print('root_dir:', root)  # 当前目录路径
 #     print('sub_dirs:', dirs)  # 当前路径下所有子目录
 #     print('files:', files)  # 当前路径下所有非目录子文件
+
+
+def time_me(info="used"):
+    """
+    cost time count
+    Instructions:
+    >>> @time_me()
+        def test():
+            return 1
+    >>> test()
+    main used 0.0240771 second
+
+    >>> @time_me("watch")
+        def test():
+            return 1
+    >>> test()
+    main watch 0.0240771 second
+    """
+    def _time_me(fn):
+        @functools.wraps(fn)
+        def _wrapper(*args, **kwargs):
+            start = time.perf_counter()
+            fn(*args, **kwargs)
+            print("%s %s %s" % (fn.__name__, info, time.perf_counter() - start), "second")
+        return _wrapper
+    return _time_me
 
 
 def mapResponseRdd(line: str):
@@ -27,8 +56,8 @@ def getColNames(line: str):
     return [splits[2], splits[6], splits[9], splits[14]]
 
 
-if __name__ == "__main__":
-
+@time_me()
+def main():
     session = SparkSession.builder.appName("StackOverFlowSurvey").master("local[*]").getOrCreate()
     sc = session.sparkContext
 
@@ -49,6 +78,11 @@ if __name__ == "__main__":
 
     print("=== Print 20 records of responses table ===")
     responseDataFrame.show(20)
+    print(responseDataFrame.describe())
 
     for response in responseDataFrame.rdd.take(10):
         print(response)
+
+
+if __name__ == "__main__":
+    main()
