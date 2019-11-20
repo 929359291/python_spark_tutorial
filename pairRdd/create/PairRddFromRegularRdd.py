@@ -8,4 +8,4 @@ if __name__ == "__main__":
     regularRDDs = sc.parallelize(inputStrings)
 
     pairRDD = regularRDDs.map(lambda s: (s.split(" ")[0], s.split(" ")[1]))
-    pairRDD.coalesce(1).saveAsTextFile("out/pair_rdd_from_regular_rdd")
+    pairRDD.coalesce(1).saveAsTextFile("out/pair_rdd_from_regular_rdd2")

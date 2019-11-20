@@ -4,9 +4,9 @@ if __name__ == "__main__":
     session = SparkSession.builder.appName("UkMakerSpaces").master("local[*]").getOrCreate()
 
     makerSpace = session.read.option("header", "true") \
-        .csv("in/uk-makerspaces-identifiable-data.csv")
+        .csv("../../in/uk-makerspaces-identifiable-data.csv")
 
-    postCode = session.read.option("header", "true").csv("in/uk-postcode.csv") \
+    postCode = session.read.option("header", "true").csv("../../in/uk-postcode.csv") \
         .withColumn("PostCode", fs.concat_ws("", fs.col("PostCode"), fs.lit(" ")))
 
     print("=== Print 20 records of makerspace table ===")

@@ -1,5 +1,7 @@
 import re
 
-class Utils():
+__all__ = ['Utils']
 
+
+class Utils:
     COMMA_DELIMITER = re.compile(''',(?=(?:[^"]*"[^"]*")*[^"]*$)''')

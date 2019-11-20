@@ -13,7 +13,7 @@ if __name__ == "__main__":
     responses = dataFrameReader \
         .option("header", "true") \
         .option("inferSchema", value = True) \
-        .csv("in/2016-stack-overflow-survey-responses.csv")
+        .csv("../in/2016-stack-overflow-survey-responses.csv")
 
     print("=== Print out schema ===")
     responses.printSchema()
