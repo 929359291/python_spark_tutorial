@@ -34,6 +34,7 @@ def time_me(info="used"):
     >>> test()
     main watch 0.0240771 second
     """
+
     def _time_me(fn):
         @functools.wraps(fn)
         def _wrapper(*args, **kwargs):
@@ -72,13 +73,12 @@ def main():
         .map(getColNames)
 
     responseDataFrame = responseRDD.toDF(colNames.collect()[0])
-
+    responseDataFrame.groupBy('country').count().show(20)
     print("=== Print out schema ===")
     responseDataFrame.printSchema()
 
     print("=== Print 20 records of responses table ===")
     responseDataFrame.show(20)
-    print(responseDataFrame.describe())
 
     for response in responseDataFrame.rdd.take(10):
         print(response)

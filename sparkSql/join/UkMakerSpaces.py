@@ -20,3 +20,5 @@ if __name__ == "__main__":
 
     print("=== Group by Region ===")
     joined.groupBy("Region").count().show(200)
+    df = joined.groupBy("Region").count().withColumnRenamed('count', 'region_count')
+    print(df)
